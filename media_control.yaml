@@ -38,16 +38,6 @@ trigger:
   from: "off"
   to: "on"
 
-variables:
-  camera: !input camera
-  notify_device: !input notify_device
-  is_ios: !input is_ios
-  notification_title: !input notification_title
-  notification_message: !input notification_message
-  delay: !input delay
-  snapshot_create_file_path: "/config/www/tmp/snapshot_{{ states[camera].object_id }}.jpg"
-  snapshot_access_file_path: "{{ snapshot_create_file_path | replace('/config/www','/local') }}"
-
 action:
   - service: notify.alexa_media
     data:
