@@ -1,0 +1,58 @@
+lueprint:
+  name: Alexa - Restrict media player
+  description: 'Make an announcement over Alexa and/or Google devices when the doorbell is pushed and send a camera snapshot to your app.'
+
+  domain: automation
+  input:
+    echo_device:
+      name: Alexa
+      description: The Alexa device to make the announcement on. Make a comma seperated list to announce on multiple devices.
+      selector:
+        entity:
+          domain: media_player
+      default: ""
+    echo_name:
+      name: Name of the owner
+      description: 'Default: "Tim"'
+      default: "Tim"   
+    end_time:
+      name: End time
+      description: Toggle if your selected device runs iOS, default is Android
+      selector:
+        time:
+      default: "22:00:00"
+    start_time:
+      name: Start time
+      description: Toggle if your selected device runs iOS, default is Android
+      selector:
+        time:
+      default: "06:00:00"
+
+  source_url: https://gist.github.com/seamus65/294db1010ba4e27e0cd8889ef110eb24
+
+mode: single
+
+trigger:
+- platform: state
+  entity_id: !input 'doorbell'
+  from: "off"
+  to: "on"
+
+variables:
+  camera: !input camera
+  notify_device: !input notify_device
+  is_ios: !input is_ios
+  notification_title: !input notification_title
+  notification_message: !input notification_message
+  delay: !input delay
+  snapshot_create_file_path: "/config/www/tmp/snapshot_{{ states[camera].object_id }}.jpg"
+  snapshot_access_file_path: "{{ snapshot_create_file_path | replace('/config/www','/local') }}"
+
+action:
+  - service: notify.alexa_media
+    data:
+      target:
+        - !input 'echo_device'
+      message: !input message
+      data:
+        type: tts
