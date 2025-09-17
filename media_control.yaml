@@ -1,4 +1,4 @@
-lueprint:
+blueprint:
   name: Alexa - Restrict media player
   description: 'Make an announcement over Alexa and/or Google devices when the doorbell is pushed and send a camera snapshot to your app.'
 
